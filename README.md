@@ -32,9 +32,12 @@ shares.  There is a whole infrastructure around using this as the base
 image for spinning up a bunch of qemu images (eg, for multi-node BBSs)
 with shared file store using samba.  This will be described later.
 
+By default, nodes start the net image and the console starts the basic image.
+
 Also:
 
-- `/dos/runimages` is where runtime images get stored.
+- `/dos/runimages` is where runtime images get stored.  It should be
+  empty when the container boots the first time; images will be created on demand.
 - `/dos/drive_g` through `drive_k` are shared to the net image systems
    via samba as `G:` through `K:`.
    - `G:` is intended to be used for applications (which, in DOS, tend to
@@ -44,6 +47,8 @@ Also:
    - `G:` and `H:` are mounted in the DOS image by the default startup scripts,
      though it would be easy to mount the others as well.
    - Child images may, but are not required to, follow this convention:
+- `G:` and `H:` are copied to the local `D:` filesystem for those images
+   that do not have the ability to mount the Samba drive.
 
 This image uses supervisor; please see the supervisor/ directory for
 examples.  Adding your own processes is very simple.
