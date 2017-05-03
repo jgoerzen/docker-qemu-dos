@@ -8,8 +8,6 @@ RUN /tmp/download.sh
 
 RUN apt-get update
 RUN apt-get -y -u dist-upgrade
-RUN dpkg --force-depends -i /tmp/setup/*.deb
-RUN apt-get -y --no-install-recommends -f install
 RUN apt-get -y --no-install-recommends install \
             fatresize mtools dosfstools samba diffutils dos2unix
 COPY scripts/ /usr/local/bin/

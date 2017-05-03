@@ -17,3 +17,7 @@ cd /tmp/setup
 zcat freedos-c.qcow2.gz > /dos/baseimages/freedos-c-minimal.qcow2
 rm freedos-c.qcow2.gz
 
+dpkg -i /tmp/setup/*.deb
+echo "parted hold" | dpkg --set-selections
+echo "libparted0debian1 hold" | dpkg --set-selections
+
