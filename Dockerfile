@@ -8,14 +8,15 @@ RUN /tmp/download.sh
 
 RUN apt-get update
 RUN apt-get -y -u dist-upgrade
+RUN dpkg --force-depends -i /tmp/setup/*.deb
+RUN apt-get -y --no-install-recommends -f install
 RUN apt-get -y --no-install-recommends install \
-            fatresize mtools dosfstools samba && \
-    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-COPY startvnc /usr/local/bin
-COPY qemuconsole /usr/local/bin
+            fatresize mtools dosfstools samba
+COPY scripts/ /usr/local/bin/
 COPY supervisor/ /etc/supervisor/conf.d/
 COPY setup/ /tmp/setup/
 RUN /tmp/setup/setup.sh
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Dosemu was just used to grab FreeDOS stuff.
 RUN rm -r /tmp/download.sh /tmp/setup
