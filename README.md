@@ -1,42 +1,54 @@
-# qemu for Docker Server
+# qemu for running DOS in Docker Server
 
 This image can be used standalone, or as a base for other images.
 
 It provides a qemu environment and a VNC console for it, running on
 port 5901.  This can be used for various guest OSs, but the image
-has special additional support for running DOS guests.
+has special additional support for running DOS guests.  It is built
+on my generic [jgoerzen/qemu](https://github.com/jgoerzen/docker-qemu).
 
 # Install and run
 
 You can install with:
 
-    docker pull jgoerzen/qemu
+    docker pull jgoerzen/qemu-dos
 
 And run with:
 
-    docker run -d -p 5901:5901 --name myqemu jgoerzen/qemu
+    docker run -d -p 5901:5901 --name myqemu jgoerzen/qemu-dos
 
 # Installed files for DOS
 
-Under `/qemu`, you will find `dosbox.conf` (the config file), to which you
-can easily append autoexec statements.  Also, there are subdirectories
-for drives C: through H: and Y:.  This image will install FreeDOS commands
-into `Y:\DOS` (pulled from dosemu, as it happens) and make sure that the DOSBox
-and FreeDOS commands are both on the system's PATH.
+All the fun happens under `/dos`.
 
-`Y:\SCRIPTS` is also created and put on the PATH, though empty by default;
-it is a place where you can add scripts and such that run later.
+Under `/dos/baseimages`, there are two drive C: images that can be used
+for booting.  The basic one is `/dos/baseimages/freedos-c-minimal.qcow2`,
+which is a typical FreeDOS 1.2 basic installation.  It is ready to run as-is.
 
-Child images may, but are not required to, follow this convention:
+The more interesting one can be found at `/dos/baseimages/freedos-c-net.qcow2`.
+It is based on the [FreeDOS 1.2NET image](https://www.lazybrowndog.net/freedos/virtualbox/?page_id=33),
+and contains, among other things, support for TCP/IP and mounting network
+shares.  There is a whole infrastructure around using this as the base
+image for spinning up a bunch of qemu images (eg, for multi-node BBSs)
+with shared file store using samba.  This will be described later.
 
- - Drive C for the main application (probably a volume, since many write to their CWD)
- - Drive D for helper applications (perhaps also a volume, since many write to their CWD)
- - Drive Y for static utilities/scripts, that would not need to be a volume.
+Also:
+
+- `/dos/runimages` is where runtime images get stored.
+- `/dos/drive_g` through `drive_k` are shared to the net image systems
+   via samba as `G:` through `K:`.
+   - `G:` is intended to be used for applications (which, in DOS, tend to
+     write to their install directories, so this could make an ideal volume)
+   - `H:` is intended to be static, and hold utilities, etc.  `H:\UTILS` is
+     added to the DOS PATH by the default startup scripts.
+   - `G:` and `H:` are mounted in the DOS image by the default startup scripts,
+     though it would be easy to mount the others as well.
+   - Child images may, but are not required to, follow this convention:
 
 This image uses supervisor; please see the supervisor/ directory for
 examples.  Adding your own processes is very simple.
 
-# Environment variables
+# Environment variable
 
  - `VNCPASSWORD` can set the password for the VNC console
    (maximum 8 characters, a limitation of tightvncserver).  If you do not set
@@ -50,6 +62,28 @@ an xterm (white) and a DOSBox terminal (black) running here, though
 child images may alter these defaults.  If you do not see a DOSBox terminal,
 then the command `dosboxconsole` should get one for you.
 
+# Included startup scripts
+
+There are scripts to help get your systems going.  They, basically:
+
+ - Make a copy of `/dos/baseimages/freedos-c-net.qcow2`, storing it and the
+   rest of the data referenced here under `/dos/runimages`.
+ - Patch the copied image to set the SMB machine name to a unique
+   session name.
+ - Create a `/dos/baseimages/SESSION/drive_d/BOOTUP.BAT` file that
+   configures the SMB client and mounts the shared drives.  This file
+   is called by the end of AUTOEXEC.BAT and is presented as a VFAT
+   partition on `D:` to the environment.
+ - Spawn QEMU and then clean up the temporary setup.
+
+The relevant scripts are installed to `/usr/local/bin` and reading them
+will help you fit it all together.  In this image,
+`qemuconsole` is called from `supervisord` to create the default image.
+It calls `mksessimg` to build the customized directory for the qemu invocation,
+then runs qemu.  qemu puts its console on VNC port :2, and opens a serial
+connection to TCP port 7000.  (tcpser or some such could be ideal
+for monitoring this).
+
 # Sources
 
 This is prepared by John Goerzen <jgoerzen@complete.org> and the source
@@ -59,15 +93,14 @@ can be found at https://github.com/jgoerzen/docker-bbs/tree/master/qemu-dos
 
 - Parted version 2 is pulled in from an old Debian version.  This version is
   used because it can resize partitions (resize command dropped in parted 3.x)
-- FIXME: more stuff
-
-The DOS drive C image is prepared from FreeDOS with standard "full install" plus
+- The DOS drive C minimal image is prepared from FreeDOS with standard "full install" plus
 the network basics as documented in [their HOWTO](http://wiki.freedos.org/wiki/index.php/Networking_FreeDOS_-_Quick_Networking_HowTo).  To this, only XFS plus the CRT patch
-have been added.  
+have been added.  (Note: XFS does not seem to be working in a modern environment.)
+- The base OS is [FreeDOS](http://www.freedos.org/) 1.2.
+- The FreeDOS distribution is [1.2NET](https://www.lazybrowndog.net/freedos/virtualbox/?page_id=33)
+- I have customized CONFIG.SYS to work around some bugs and improve idle
+  CPU usage.  AUTOEXEC.BAT just makes a quick call.
 
-
-
-The data sharing comes from XFS inside DOS, and UNFS3 on Linux.  
 
 # References and information
 
