@@ -23,6 +23,9 @@ prepsed C:AUTOEXEC.BAT
 echo "D:\\BOOTUP" >> "$TEMPSED"
 finishsed
 
+# This suppresses the login prompt at boot
+mcopy -D o /tmp/setup/FREEDOS.PWL c:/net
+
 finishimageedit "/dos/baseimages/freedos-c-net.qcow2"
 gzip -9 /dos/baseimages/freedos-c-net.qcow2
 
