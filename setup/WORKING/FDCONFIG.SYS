@@ -16,7 +16,7 @@
 
 !MENUCOLOR=7,1
 ; Load network by default
-!MENUDEFAULT=3,10
+!MENUDEFAULT=3,5
 
 MENU 1 - Load FreeDOS
 MENU 2 - Load FreeDOS without drivers
