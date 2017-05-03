@@ -1,0 +1,110 @@
+; This configuration file can be called CONFIG.SYS or FDCONFIG.SYS
+; and must be placed at C:\ (root).
+;
+; Comments use a semicolon ";".
+;
+; Singlestepping
+; Press F8 at boot to switch on Singlestepping. 
+; Begin lines with an "?" to decide in Singlestepping if they are 
+; executed. Lines that begin with an "!" are always executed. 
+;
+; Menus
+; 
+; The menus are configured differently than in MS-DOS. See
+; http://www.freedos.org/kernel/config.txt
+; to learn more about menus and the FDCONFIG.SYS options.
+
+!MENUCOLOR=7,1
+; Load network by default
+!MENUDEFAULT=3,5
+
+MENU 1 - Load FreeDOS
+MENU 2 - Load FreeDOS without drivers
+MENU
+MENU 3 - FreeDOS - with MS Client and:   TCP/IP protocol (Windows / Samba)
+MENU 4 - ............................... NetBEUI protocol (Win 9x / XP)
+MENU 5 - ............................... IPX protocol (WfW, NT)
+MENU 6 - FreeDOS - with NetWare Client
+
+
+; ----
+; Basic Configuration
+
+!SET DOSDIR=C:\FDOS
+!COUNTRY=001,858,C:\FDOS\BIN\COUNTRY.SYS
+; we need lots of drives
+LASTDRIVE=Z
+!BUFFERS=20
+!FILES=40
+
+
+; ----
+; MENU 1 - Load FreeDOS
+
+
+1?DOS=HIGH
+1?DOS=UMB
+1?DOSDATA=UMB
+
+; Choose your Memory Manager.
+
+; a) FreeDOS 1.0 Memory Manager (old, VirtualBox compatible) 
+
+; 1?DEVICE=C:\UTIL\EMM386\HIMEM.EXE
+; 1?DEVICE=C:\UTIL\EMM386\EMM386.EXE NOEMS X=EF00-EFFF
+
+; b) JEMMEX (more features, might crash)
+
+; 1?DEVICE=C:\FDOS\BIN\JEMMEX.EXE NOEMS X=TEST I=B000-B7FF I=C800-EFFF NOVME NOINVLPG
+
+; c) JEMM386 and HIMEMX
+
+; option a crashed with Invalid instruction sometimes
+1?DEVICE=C:\FDOS\BIN\HIMEMX.EXE
+1?DEVICE=C:\FDOS\BIN\JEMM386.EXE X=TEST I=TEST I=B000-B7FF NOVME NOINVLPG
+
+; d) DR-DOS Memory Manager (trial-version, non-commercial use only).
+
+;1?DEVICE=C:\UTIL\DRDOS\DREMM386.EXE NOEMS EXCLUDE=EF00-EFFF
+; (Please also add "C:\UTIL\DRDOS\DREMM386.EXE PIC=ON" in AUTOEXEC.BAT.)
+
+1?SHELLHIGH=C:\FDOS\BIN\COMMAND.COM C:\FDOS\BIN /E:1024 /P=C:\AUTOEXEC.BAT
+
+
+; ----
+; MENU 2 - Load FreeDOS without drivers
+
+2?SHELL=C:\FDOS\BIN\COMMAND.COM C:\FDOS\BIN /E:1024 /P=C:\AUTOEXEC.BAT
+
+
+; ----
+; MENU 3, 4, 5 and 6 - FreeDOS with MS Client or NetWare client
+
+3456?DOS=HIGH
+3456?DOS=UMB
+3456?DOSDATA=UMB
+
+; The old memory managers from FreeDOS 1.0 have proved
+; to be stable in VirtualBox:
+;3456?DEVICE=C:\UTIL\EMM386\HIMEM.EXE
+;3456?DEVICE=C:\UTIL\EMM386\EMM386.EXE NOEMS X=EF00-EFFF
+; Or use the new memory manager JEMMEX with these options in VirtualBox
+;3456?DEVICE=C:\FDOS\BIN\JEMMEX.EXE NOEMS X=TEST I=B000-B7FF I=C800-EFFF NOVME NOINVLPG
+;3456?DEVICE=C:\FDOS\BIN\HIMEMX.EXE
+;3456?DEVICE=C:\FDOS\BIN\JEMM386.EXE X=EF00-EFFF NOVME NOINVLPG
+; Or the DR-DOS driver:
+rem 3456?DEVICE=C:\UTIL\DRDOS\DREMM386.EXE NOEMS EXCLUDE=EF00-EFFF
+3456?DEVICE=C:\UTIL\DRDOS\DREMM386.EXE NOEMS
+
+3456?VERSION=6.22
+3456?STACKS=9,256
+
+; This is only needed for MS Client 3.0:
+345?DEVICE=C:\NET\IFSHLP.SYS
+
+3456?SHELLHIGH=C:\FDOS\BIN\COMMAND.COM C:\FDOS\BIN /E:1024 /P=C:\AUTOEXEC.BAT
+
+; Reduce power usage at times, per http://help.fdos.org/en/hhstndrd/cnfigsys/idlehalt.htm
+IDLEHALT=-1
+
+

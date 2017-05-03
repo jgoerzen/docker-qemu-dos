@@ -7,7 +7,9 @@ SESSPATH="/dos/runimages/$SESSNAME"
 set -e
 set -x
 
-mksessimg /dos/baseimages/freedos-c-net.qcow2.gz "$SESSNAME"
+if [ ! -d "$SESSPATH" ]; then 
+  mksessimg /dos/baseimages/freedos-c-net.qcow2.gz "$SESSNAME"
+fi
 
 waitfordaemon vncserver true
 waitfordaemon smbd true
@@ -20,8 +22,7 @@ qemu-system-i386 -localtime \
    -hdb "fat:$SESSPATH/drive_d" \
    -net nic,model=pcnet -net user \
    -name "$SESSNAME" -vnc :2
-   # -chardev socket,id=com1,host=localhost,port=7000 -device isa-serial,chardev=com1
+   -chardev socket,id=com1,host=localhost,port=7000 -device isa-serial,chardev=com1
 RETCODE="$?"
-rm -r "$SESSPATH"
 exit "$RETCODE"
 

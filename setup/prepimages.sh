@@ -15,9 +15,8 @@ gzip baseprep.qcow2
 # Now customize our image.
 prepimageedit baseprep.qcow2.gz
 
-prepsed C:FDCONFIG.SYS
-patch "$TEMPSED" /tmp/setup/fdconfig.sys.patch
-finishsed
+mcopy -D o WORKING/FDCONFIG.SYS C:
+mcopy -D o WORKING/AUTOEXEC.BAT C:
 
 prepsed C:AUTOEXEC.BAT
 echo "D:\\BOOTUP" >> "$TEMPSED"
