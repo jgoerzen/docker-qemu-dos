@@ -1,18 +1,15 @@
-FROM debian:jessie
+FROM jgoerzen/qemu
 MAINTAINER John Goerzen <jgoerzen@complete.org>
-# VNC doesn't start without xfonts-base
-RUN apt-get update
-RUN apt-get -y -u dist-upgrade
-RUN apt-get -y --no-install-recommends install wget
 RUN mkdir /tmp/setup
 COPY setup/sums /tmp/setup
+# Do the download ASAP so we don't hit the download sites overly hard
 COPY download.sh /tmp/download.sh
 RUN /tmp/download.sh
-RUN apt-get -y --no-install-recommends install tightvncserver xfonts-base \
-            lwm xterm vim-tiny less ca-certificates balance \
-            supervisor zip unzip pwgen xdotool telnet mtools nano \
-            qemu-system-x86 qemu-utils samba fatresize dosfstools \
-            xvnc4viewer tcpser ser2net && \
+
+RUN apt-get update
+RUN apt-get -y -u dist-upgrade
+RUN apt-get -y --no-install-recommends install \
+            fatresize mtools dosfstools samba && \
     apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 COPY startvnc /usr/local/bin
 COPY qemuconsole /usr/local/bin
