@@ -7,7 +7,7 @@ prepimageedit() {
   zcat "$1" > "/tmp/imgtemp.$$.qcow2"
   qemu-img convert -f qcow2 -O raw "/tmp/imgtemp.$$.qcow2" "$TEMPIMAGE"
   rm "/tmp/imgtemp.$$.qcow2"
-  echo "drive c: file=\"TEMPIMAGE\" partition=1" > /etc/mtools.conf
+  echo "drive c: file=\"$TEMPIMAGE\" partition=1" > /etc/mtools.conf
 }
 
 # Finish working on a temp image, winding up saving it uncompress to
@@ -30,7 +30,7 @@ prepsed() {
 
 # Finish up the sed.  No need to give it the original filename back.
 finishsed() {
-  mcopy "$TEMPSED" "$TEMPSEDORIGIN"
+  mcopy -D o "$TEMPSED" "$TEMPSEDORIGIN"
   rm "$TEMPSED"
   unset TEMPSED
   unset TEMPSEDORIGIN

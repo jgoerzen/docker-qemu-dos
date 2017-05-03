@@ -8,7 +8,7 @@ set -x
 cd /tmp/setup
 unzip /tmp/setup/FreeDOS1.2net.vhd.zip
 rm /tmp/setup/FreeDOS1.2net.vhd.zip
-qemu-img convert FreeDOS1.2net.vhd baseprep.qcow2
+qemu-img convert -O qcow2 FreeDOS1.2net.vhd baseprep.qcow2
 rm FreeDOS1.2net.vhd
 gzip baseprep.qcow2
 

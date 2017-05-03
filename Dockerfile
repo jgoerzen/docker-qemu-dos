@@ -9,7 +9,7 @@ RUN /tmp/download.sh
 RUN apt-get update
 RUN apt-get -y -u dist-upgrade
 RUN apt-get -y --no-install-recommends install \
-            fatresize mtools dosfstools samba diffutils dos2unix
+            fatresize mtools dosfstools samba diffutils dos2unix patch
 COPY scripts/ /usr/local/bin/
 COPY supervisor/ /etc/supervisor/conf.d/
 COPY setup/ /tmp/setup/
