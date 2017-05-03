@@ -18,6 +18,7 @@ COPY setup/ /tmp/setup/
 RUN /tmp/setup/setup.sh
 RUN /tmp/setup/prepimages.sh
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+COPY smb.conf /etc/samba/smb.conf
 
 # Dosemu was just used to grab FreeDOS stuff.
 RUN rm -r /tmp/download.sh /tmp/setup

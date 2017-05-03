@@ -11,6 +11,7 @@ mksessimg /dos/baseimages/freedos-c-net.qcow2a "$SESSNAME"
 
 qemu-system-i386 -localtime \
    "$SESSPATH/c.qcow2" -boot c \
+   -hdb "fat:$SESSPATH/drive_d" \
    -net nic,model=pcnet -net user \
    -name "$SESSNAME" -vnc :2 \
    -chardev socket,id=com1,host=localhost,port=7000 -device isa-serial,chardev=com1
