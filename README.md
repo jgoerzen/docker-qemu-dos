@@ -50,10 +50,16 @@ an xterm (white) and a DOSBox terminal (black) running here, though
 child images may alter these defaults.  If you do not see a DOSBox terminal,
 then the command `dosboxconsole` should get one for you.
 
-# Source
+# Sources
 
 This is prepared by John Goerzen <jgoerzen@complete.org> and the source
-can be found at https://github.com/jgoerzen/docker-bbs/tree/master/qemu
+can be found at https://github.com/jgoerzen/docker-bbs/tree/master/qemu-dos
+
+# Included Software
+
+- Parted version 2 is pulled in from an old Debian version.  This version is
+  used because it can resize partitions (resize command dropped in parted 3.x)
+- FIXME: more stuff
 
 The DOS drive C image is prepared from FreeDOS with standard "full install" plus
 the network basics as documented in [their HOWTO](http://wiki.freedos.org/wiki/index.php/Networking_FreeDOS_-_Quick_Networking_HowTo).  To this, only XFS plus the CRT patch

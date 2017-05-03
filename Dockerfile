@@ -18,7 +18,7 @@ COPY setup/ /tmp/setup/
 RUN /tmp/setup/setup.sh
 
 # Dosemu was just used to grab FreeDOS stuff.
-RUN apt-get -y --purge remove build-essential gcc bison flex && apt-get -y --purge autoremove && rm -r /tmp/download.sh /tmp/setup
+RUN rm -r /tmp/download.sh /tmp/setup
 
 EXPOSE 5901
 CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
