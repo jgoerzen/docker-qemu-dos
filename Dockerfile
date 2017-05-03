@@ -15,11 +15,9 @@ COPY supervisor/ /etc/supervisor/conf.d/
 COPY setup/ /tmp/setup/
 RUN /tmp/setup/setup.sh
 RUN /tmp/setup/prepimages.sh
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+    /tmp/setup
 COPY smb.conf /etc/samba/smb.conf
-
-# Dosemu was just used to grab FreeDOS stuff.
-RUN rm -r /tmp/download.sh /tmp/setup
 
 EXPOSE 5901
 CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
