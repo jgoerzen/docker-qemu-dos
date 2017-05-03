@@ -7,7 +7,7 @@ SESSPATH="/dos/runimages/$SESSNAME"
 set -e
 set -x
 
-mksessimg /dos/baseimages/freedos-c-net.qcow2a "$SESSNAME"
+mksessimg /dos/baseimages/freedos-c-net.qcow2.gz "$SESSNAME"
 
 qemu-system-i386 -localtime \
    "$SESSPATH/c.qcow2" -boot c \
