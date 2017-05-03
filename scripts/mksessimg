@@ -1,0 +1,31 @@
+#!/bin/bash
+# Make a session image
+# Base image as $1
+# Name of session as $2
+
+. /usr/local/bin/imagefuncs.sh
+
+# Note: these scripts are not race-safe!
+
+SESSPATH="/dos/runimages/$2"
+SESSNAME=`echo $2 | tr a-z A-Z`
+
+if [ -e "$SESSPATH" ]; then
+  echo "$SESSPATH already exists; exiting!"
+  exit 5
+fi
+
+prepimageedit "$1"
+prepsed C:/NET/SYSTEM.INI
+sed -i "s/computername=FREEDOS/computername=$SESSNAME" "$TEMPSED"
+finishsed
+finishimageedit "$SESSPATH/c.qcow2"
+
+cd "$SESSPATH"
+mkdir drive_d
+cd drive_d
+echo "NET LOGON FREEDOS PASSWD /YES" >> BOOTUP.BAT
+echo "NET USE G: \\\\LINUX\\DRIVE_G" >> BOOTUP.BAT
+echo "NET USE H: \\\\LINUX\\DRIVE_H" >> BOOTUP.BAT
+echo "PATH=%PATH%;G:\\UTILS"         >> BOOTUP.BAT
+

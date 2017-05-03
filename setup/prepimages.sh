@@ -20,7 +20,7 @@ patch "$TEMPSED" /tmp/setup/fdconfig.sys.patch
 finishsed
 
 prepsed C:AUTOEXEC.BAT
-echo "D:\\BOOT\\BOOTUP" >> "$TEMPSED"
+echo "D:\\BOOTUP" >> "$TEMPSED"
 finishsed
 
 finishimageedit "/dos/baseimages/freedos-c-net.qcow2"
