@@ -3,21 +3,11 @@
 set -e
 set -x
 
-cd /tmp/setup
-tar -zxf unfs3-0.9.22.tar.gz
-cd unfs3-0.9.22
-./configure
-make
-make install
-
-mkdir -p /dos/drive_{d,e,f,g,y}
-mkdir /dos/drive_y/SCRIPTS
+mkdir -p /dos/drive_{g,h,i,j,k}
+mkdir /dos/drive_g/{BOOT,SCRIPTS}
+mkdir /dos/baseimages
 
 cd /tmp/setup
-zcat freedos-c.qcow2.gz > /dos/freedos-c.qcow2
-
-# Convenience aliases
-cd /usr/local/bin
-ln -s /usr/bin/vim.tiny vim
-ln -s /usr/bin/vim.tiny vi
+zcat freedos-c.qcow2.gz > /dos/baseimages/freedos-c-minimal.qcow2
+rm freedos-c.qcow2.gz
 
