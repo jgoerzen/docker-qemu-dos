@@ -58,9 +58,8 @@ examples.  Adding your own processes is very simple.
 # VNC-based console
 
 VNC is exposed on port 5901.  You can connect to this port.  You will see, by default,
-an xterm (white) and a DOSBox terminal (black) running here, though
-child images may alter these defaults.  If you do not see a DOSBox terminal,
-then the command `dosboxconsole` should get one for you.
+an xterm (white) and a qemu terminal (black) running here, though
+child images may alter these defaults.
 
 # Included startup scripts
 
