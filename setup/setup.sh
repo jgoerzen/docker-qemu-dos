@@ -4,7 +4,6 @@ set -e
 set -x
 
 mkdir -p /dos/drive_{g,h,i,j,k}
-mkdir /dos/drive_g/{BOOT,SCRIPTS}
 mkdir /dos/baseimages
 mkdir /dos/runimages
 

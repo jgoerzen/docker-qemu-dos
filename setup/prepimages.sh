@@ -15,4 +15,16 @@ gzip baseprep.qcow2
 # Now customize our image.
 prepimageedit baseprep.qcow2.gz
 
+prepsed C:FDCONFIG.SYS
+patch "$TEMPSED" /tmp/setup/fdconfig.sys.patch
+finishsed
+
+prepsed C:AUTOEXEC.BAT
+echo "D:\\BOOT\\BOOTUP" >> "$TEMPSED"
+finishsed
+
+finishimageedit "/dos/baseimages/freedos-c-net.qcow2"
+gzip -9 /dos/baseimages/freedos-c-net.qcow2
+
+rm baseprep.qcow2
 
