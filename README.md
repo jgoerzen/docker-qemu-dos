@@ -22,8 +22,8 @@ And run with:
 All the fun happens under `/dos`.
 
 Under `/dos/baseimages`, there are two drive C: images that can be used
-for booting.  The basic one is `/dos/baseimages/freedos-c-minimal.qcow2`,
-which is a typical FreeDOS 1.2 basic installation.  It is ready to run as-is.
+for booting.  The basic one is `/dos/baseimages/freedos-c-minimal.qcow2.gz`,
+which is a typical FreeDOS 1.2 basic installation plus a TCP/IP stack.  It is ready to run as-is.
 
 The more interesting one can be found at `/dos/baseimages/freedos-c-net.qcow2`.
 It is based on the [FreeDOS 1.2NET image](https://www.lazybrowndog.net/freedos/virtualbox/?page_id=33),

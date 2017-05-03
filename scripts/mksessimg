@@ -2,6 +2,7 @@
 # Make a session image
 # Base image as $1
 # Name of session as $2
+# Additional program to run while image is open in $3 (optional)
 
 . /usr/local/bin/imagefuncs.sh
 
@@ -25,6 +26,11 @@ prepimageedit "$1"
 prepsed C:/NET/SYSTEM.INI
 sed -i "s/computername=FREEDOS/computername=$SESSNAME/" "$TEMPSED"
 finishsed
+
+if [ ! -z "$3" ]; then
+  $3
+fi
+
 finishimageedit "$SESSPATH/c.qcow2"
 
 cd "$SESSPATH"

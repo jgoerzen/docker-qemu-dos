@@ -14,8 +14,7 @@ mkdir /dos/runimages
 mkdir /dos/drive_h/UTILS
 
 cd /tmp/setup
-zcat freedos-c.qcow2.gz > /dos/baseimages/freedos-c-minimal.qcow2
-rm freedos-c.qcow2.gz
+mv freedos-c.qcow2.gz /dos/baseimages/freedos-c-minimal.qcow2.gz
 
 dpkg -i /tmp/setup/*.deb
 echo "parted hold" | dpkg --set-selections

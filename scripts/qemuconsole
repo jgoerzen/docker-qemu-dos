@@ -3,12 +3,13 @@
 export DISPLAY=:1
 SESSNAME="qemucon"
 SESSPATH="/dos/runimages/$SESSNAME"
+BASEIMAGE="${BASEIMAGE:-/dos/baseimages/freedos-c-minimal.qcow2.gz}"
 
 set -e
 set -x
 
 if [ ! -d "$SESSPATH" ]; then 
-  mksessimg /dos/baseimages/freedos-c-net.qcow2.gz "$SESSNAME"
+  mksessimg "$BASEIMAGE" "$SESSNAME"
 fi
 
 waitfordaemon vncserver true
