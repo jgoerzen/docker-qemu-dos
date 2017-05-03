@@ -23,9 +23,9 @@ mkdir "$SESSPATH"
 
 
 prepimageedit "$1"
-prepsed C:/NET/SYSTEM.INI
-sed -i "s/computername=FREEDOS/computername=$SESSNAME/" "$TEMPSED"
-finishsed
+prepsed C:/NET/SYSTEM.INI && \
+   sed -i "s/computername=FREEDOS/computername=$SESSNAME/" "$TEMPSED" && \
+   finishsed || true
 
 if [ ! -z "$3" ]; then
   $3
