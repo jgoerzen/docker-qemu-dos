@@ -5,6 +5,9 @@
 
 . /usr/local/bin/imagefuncs.sh
 
+set -e
+set -x
+
 # Note: these scripts are not race-safe!
 
 SESSPATH="/dos/runimages/$2"
@@ -15,9 +18,12 @@ if [ -e "$SESSPATH" ]; then
   exit 5
 fi
 
+mkdir "$SESSPATH"
+
+
 prepimageedit "$1"
 prepsed C:/NET/SYSTEM.INI
-sed -i "s/computername=FREEDOS/computername=$SESSNAME" "$TEMPSED"
+sed -i "s/computername=FREEDOS/computername=$SESSNAME/" "$TEMPSED"
 finishsed
 finishimageedit "$SESSPATH/c.qcow2"
 
