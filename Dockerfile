@@ -13,6 +13,7 @@ RUN apt-get -y --no-install-recommends install \
 COPY scripts/ /usr/local/bin/
 COPY supervisor/ /etc/supervisor/conf.d/
 COPY setup/ /tmp/setup/
+COPY freedos-c-minimal.qcow2.gz /dos/baseimages/freedos-c-minimal.qcow2.gz
 RUN /tmp/setup/setup.sh
 RUN /tmp/setup/prepimages.sh
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
