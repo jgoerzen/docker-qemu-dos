@@ -6,18 +6,18 @@ COPY setup/sums /tmp/setup
 COPY download.sh /tmp/download.sh
 RUN /tmp/download.sh
 
-RUN apt-get update
-RUN apt-get -y -u dist-upgrade
-RUN apt-get -y --no-install-recommends install \
-            fatresize mtools dosfstools samba diffutils dos2unix patch
+RUN apt-get update && \
+    apt-get -y -u dist-upgrade && \
+    apt-get -y --no-install-recommends install \
+            fatresize mtools dosfstools samba diffutils dos2unix patch && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 COPY scripts/ /usr/local/bin/
 COPY supervisor/ /etc/supervisor/conf.d/
 COPY setup/ /tmp/setup/
 COPY freedos-c-minimal.qcow2.gz /dos/baseimages/freedos-c-minimal.qcow2.gz
 RUN /tmp/setup/setup.sh
 RUN /tmp/setup/prepimages.sh
-RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
-    /tmp/setup
+RUN rm -rf /tmp/setup
 COPY smb.conf /etc/samba/smb.conf
 
 EXPOSE 5901
