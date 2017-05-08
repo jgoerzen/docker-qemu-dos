@@ -9,9 +9,9 @@ set -x
 # I and J are not mounted by default.
 
 mkdir -p /dos/drive_{g,h,i,j,k}
-mkdir /dos/baseimages
-mkdir /dos/runimages
-mkdir /dos/drive_h/UTILS
+mkdir -p /dos/baseimages
+mkdir -p /dos/runimages
+mkdir -p /dos/drive_h/UTILS
 
 cd /tmp/setup
 wget https://www.lazybrowndog.net/freedos/virtualbox/downloads/vhd/FreeDOS1.2net.vhd.zip
