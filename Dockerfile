@@ -11,9 +11,9 @@ COPY setup/ /tmp/setup/
 # Do the download ASAP so we don't hit the download sites overly hard
 COPY supervisor/ /etc/supervisor/conf.d/
 COPY freedos-c-minimal.qcow2.gz /dos/baseimages/freedos-c-minimal.qcow2.gz
+COPY smb.conf /etc/samba/smb.conf
 RUN /tmp/setup/setup.sh
 RUN rm -rf /tmp/setup
-COPY smb.conf /etc/samba/smb.conf
 
 EXPOSE 5901
 CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]

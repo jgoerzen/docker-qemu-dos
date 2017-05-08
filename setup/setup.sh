@@ -59,4 +59,5 @@ finishimageedit "/dos/baseimages/freedos-c-net.qcow2"
 gzip -9 /dos/baseimages/freedos-c-net.qcow2
 
 rm baseprep.qcow2.gz
+cd /
 
