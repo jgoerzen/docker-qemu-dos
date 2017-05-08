@@ -15,5 +15,5 @@ COPY smb.conf /etc/samba/smb.conf
 RUN /tmp/setup/setup.sh && rm -rf /tmp/setup
 
 EXPOSE 5901
-CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
+CMD ["/usr/local/bin/boot-supervisord"]
 
